@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+#
+# Translate Imu Array from multiwii to IMU message
+#  
+
+import rospy
+from   std_msgs.msg     import Int16MultiArray
+from   sensor_msgs.msg  import Imu
+
+def imuCB(msg_in):
+  global pub
+  
+  msg_out.header.stamp = rospy.Time.now()
+  msg_out.frame_id = "imu"
+  msg_out.linear_acceleration.x = msg_in.data[0]
+  msg_out.linear_acceleration.x = msg_in.data[1]
+  msg_out.linear_acceleration.x = msg_in.data[2]
+  msg_out.angular_velocity.x = msg_in.data[3]
+  msg_out.angular_velocity.x = msg_in.data[4]
+  msg_out.angular_velocity.x = msg_in.data[5]
+  
+
+if __name__ == '__main__':
+  global pub  
+  
+  rospy.init_node('multiWii_imu')
+  pub = rospy.Publisher('imu_out', Imu) 
+  rospy.Subscriber("imu", Int16MultiArray, imuCB)
+  rospy.spin()
+  
+  
+  
+  
+  
+  
+  
+  
+  

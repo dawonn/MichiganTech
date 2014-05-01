@@ -1,0 +1,10 @@
+<launch>
+
+	
+	<node pkg="urg_node" type="urg_node" name="Hokuyo" >
+
+	  <rosparam file="$(find pioneer3at)/config/hokuyo.yaml" command="load" />
+	</node>
+	
+
+</launch>

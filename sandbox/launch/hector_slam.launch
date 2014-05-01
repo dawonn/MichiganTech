@@ -1,0 +1,16 @@
+<launch>
+	<node pkg="hector_mapping" type="hector_mapping" name="Pioneer3AT_hector_mapping">	
+	  <rosparam file="$(find sandbox)/config/hector_mapping.yaml" command="load" />
+	  
+	  <!-- Subscriber -->
+	  <remap from="scan"          to="scan_out"/>
+	  <remap from="syscommand"    to="syscommand"/>
+	  
+	  <!-- Publisher -->
+	  <remap from="map_metadata"  to="map_metadata"/>
+	  <remap from="map"           to="map"/>
+	  <remap from="slam_out_pose" to="slam_out_pose"/>
+	  <remap from="poseupdate"    to="poseupdate"/>
+	  
+	</node>
+</launch>

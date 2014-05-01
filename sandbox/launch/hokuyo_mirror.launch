@@ -1,0 +1,45 @@
+<launch>
+
+	
+	<node pkg="urg_node" type="urg_node" name="Hokuyo" >
+	  <param name="ip_address" value="192.168.0.10" />
+	</node>
+	 
+	
+	<!-- Filters the raw laser scan and removes the down facing beams -->
+	<node pkg="sandbox" type="lidar_filter.py" name="filer_hokuyo_out" >
+	  <param name="angle_min" value="-125" />
+	</node>
+	
+	<!-- Filters the raw laser scan and removes the normal beams -->
+	<node pkg="sandbox" type="lidar_filter.py" name="filer_hokuyo_down" >
+	  <param name="angle_min" value="-135" />
+	  <param name="angle_max" value="-125" />
+	  <param name="frame" value="laser_down" />	  
+	  
+	  <remap from="scan_out" to="scan_down" />
+	</node>
+	
+	<!-- static transform for the redirected down-looking laser beams -->
+	<node pkg="tf" type="static_transform_publisher" name="tf_Hokuyo_down" 
+	      args="0 0 0   0 -0.72 1.58   laser laser_down 100" />
+	
+	<!-- Find the height based on down facing beams -->
+	<node pkg="sandbox" type="lidar_mirror.py" name="hokuyo_mirror" output="screen" />
+	
+	
+	
+	
+	<!-- Vectornav driver 
+	<include file="$(find vectornav)/launch/vn200.launch" />
+	-->
+		
+	<!-- Uses vectornav to detect orientation of the lidar sensor  -->
+	<node pkg="vectornav" type="tf_orientation.py" name="vn_orient" output="screen" />
+	
+
+	<include file="$(find sandbox)/launch/hector_slam.launch" />
+	
+
+
+</launch>
